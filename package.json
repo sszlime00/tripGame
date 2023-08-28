@@ -4,7 +4,9 @@
   "description": "Realization of Xiaoxiaole game based on pixi and typescript",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --mode=development"
+    "start": "webpack serve --mode=development",
+    "build": "run-s build-only",
+    "build-only": "webpack --mode=production"
   },
   "repository": {
     "type": "git",
