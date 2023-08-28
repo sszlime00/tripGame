@@ -1,7 +1,7 @@
-import { Administer } from './Administer';
-import { LobbyScene } from './Page/StartGame';
-import { loadAssets } from './scripts/assetLoad';
-import { GameScene } from './Page/Game';
+import { Administer } from './src/Administer';
+import { LobbyScene } from './src/Page/StartGame';
+import { loadAssets } from './src/scripts/assetLoad';
+import { GameScene } from './src/Page/Game';
 
 async function loadGame(): Promise<void> {
   const loading = document.getElementById('loading');

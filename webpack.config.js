@@ -7,7 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = (env, argv) => {
   return ({
     stats: 'minimal', 
-    entry: './src/index.ts', 
+    entry: './index.ts', 
 
    
     output: {
