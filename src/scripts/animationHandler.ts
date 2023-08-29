@@ -17,15 +17,14 @@ type MoveParams = {
 const DefaultMoveParam = { duration: 250, delay: 0, easing: Easing.Quadratic.InOut };
 
 export function animateSymbolToPosition(symbol: SymbolComponent, position: Point, params?: MoveParams): Promise<void> {
-  const { duration, delay, easing } = { ...DefaultMoveParam, ...params };
   console.log('animateSymbolToPosition!!!');
   
   return new Promise<void>((resolve) => {
     symbol.alpha = 1;
     new Tween(symbol)
-      .to({ x: position.x, y: position.y }, duration)
-      .easing(easing)
-      .onComplete(() => setTimeout(resolve, delay))
+      .to({ x: position.x, y: position.y }, 100)
+      .easing(Easing.Quadratic.InOut)
+      .onComplete(() => resolve())
       .start()
   });
 }
@@ -41,12 +40,12 @@ export async function animateSymbolSwap(origin: SymbolComponent, target: SymbolC
 export function animateSymbolExplode(symbol: SymbolComponent): Promise<void> {
   return new Promise<void>((resolve) =>
     new Tween(symbol)
-      .to({ scale: 4, alpha: 0 }, 100)
+      .to({ scale: 4, alpha: 0 }, 50)
       .easing(Easing.Quadratic.Out)
       .onComplete(() => {
         setTimeout(() => {
           resolve(); // 在间隔时间后解决 Promise
-        }, 30)})
+        }, 0.5)})
       .start()
   );
 }

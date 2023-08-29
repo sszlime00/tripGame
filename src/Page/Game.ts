@@ -249,7 +249,7 @@ export class GameScene extends Container implements IScene {
         if (!symbol) return;
         const pos = this.getPositionForPoint(newPoint);
         
-        await animateSymbolToPosition(symbol, pos, { duration: 400, easing: Easing.Quartic.Out });
+        await animateSymbolToPosition(symbol, pos, { duration: 100, easing: Easing.Elastic.Out });
         symbol.boardPos = newPoint;
         symbol.symbolID = board[newPoint.y][newPoint.x];
       }));

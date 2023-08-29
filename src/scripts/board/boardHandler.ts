@@ -4,7 +4,7 @@ import { getCombinationsInBoard } from "./combinationHandler";
 import { getBoardValidActions } from "./actionHandler";
 import { rangeArray } from "../utils";
 
-export const SYMBOL_SIZE = 75;
+export const SYMBOL_SIZE = 60;
 
 export const SYMBOL_MARGIN = 2;
 
