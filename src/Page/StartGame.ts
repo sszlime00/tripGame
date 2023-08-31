@@ -4,22 +4,24 @@ import ButtonComponent from "../components/general/ButtonComponent";
 import { GameAssets, GameFont } from "../scripts/assetLoad";
 import { IScene } from "../scripts/types";
 import { Spine } from 'pixi-spine';
-import { GameScene } from "./Game";
-import { Matrix, GameRules } from '../scripts/types'
+import { Game } from "./Game";
+import { GameRules } from '../scripts/types'
 import { Easing, Tween } from "tweedle.js";
 import { animateTitleDown } from '../scripts/animationHandler'
+import { Howl } from 'howler';
 
-export class LobbyScene extends Container implements IScene {
+
+export class StartGame extends Container implements IScene {
   private readonly title;
   private readonly playButton: ButtonComponent;
-  private board: Matrix = [];
   private initialRules: GameRules = {
-    limitScore: 500,
+    limitScore: 10,
     limitTime: 60,
   }
 
-  constructor() {
+  constructor(music) {
     super();
+    music.play();
     this.title = this.makeTitle();
     this.playButton = this.makePlayButton();
     this.playButton.on('click', this.onPlayClicked, this);
@@ -37,13 +39,13 @@ export class LobbyScene extends Container implements IScene {
   }
   private onPlayClicked(): void {
     console.log('click')
-    Administer.changeScene(new GameScene(this.initialRules))
+    Administer.changeScene(new Game(this.initialRules))
   }
 
   private makeTitle() {
-    const text = new Text('Match 3', new TextStyle({
+    const text = new Text('Match Game', new TextStyle({
       fontFamily: GameFont.Poppins,
-      fontSize: 65,
+      fontSize: 55,
       fill: '#C38ACC',
       stroke: 'white',
       strokeThickness: 5,

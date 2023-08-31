@@ -29,7 +29,11 @@ module.exports = (env, argv) => {
         },
         progress: true,
       },
-      port: 1234, host: '0.0.0.0'
+      port: 1234, host: '0.0.0.0',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        // 'Content-Type': 'audio/mp3', // 或者 'audio/mp3'
+      },
     },
 
     
@@ -70,12 +74,14 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
+      // Copy our static assets to the final build
       new CopyPlugin({
         patterns: [{ from: 'static/' }],
       }),
 
+      // Make an index.html from the template
       new HtmlWebpackPlugin({
-        template: 'index.html',
+        template: 'index.ejs',
         hash: true,
         minify: false
       })

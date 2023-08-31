@@ -5,15 +5,17 @@ import GameOver from "../components/GameEnd";
 import GameUI from "../components/GameScene";
 import SymbolComponent from "../components/general/SymbolComponent";
 import SymbolPool from '../components/general/SymbolPool'
-import { BoardGroup, UIGroup ,animateBoardImpact, animateScoreFeedback, animateSymbolExplode, animateSymbolSwap, animateSymbolToPosition, fadeComponent } from "../scripts/animationHandler";
+import { BoardGroup, UIGroup, animateScoreFeedback, animateSymbolExplode, animateSymbolSwap, animateSymbolToPosition, fadeComponent } from "../scripts/animationHandler";
 import { GameFont } from "../scripts/assetLoad";
 import { applyActionOnBoard, createAction, getActionHash, getActionTargetPoint, getBoardValidActions } from "../scripts/board/actionHandler";
 import { BOARD_SIZE, SYMBOL_MARGIN, SYMBOL_SIZE, applyBoardGravity, copyBoard, findGravityDrops, isAdjacent, makeFirstBoard } from "../scripts/board/boardHandler";
 import { getCombinationScore, getCombinationsInBoard, removeCombinationsFromBoard } from "../scripts/board/combinationHandler";
 import { BoardMatrix, GameAction, GameCombination, GameRules, IScene, SymbolID } from "../scripts/types";
 import { rangeArray } from "../scripts/utils";
+import { Howl } from 'howler';
 
-export class GameScene extends Container implements IScene {
+
+export class Game extends Container implements IScene {
   private readonly rules: GameRules;
 
   private board: BoardMatrix = [];
@@ -106,7 +108,11 @@ export class GameScene extends Container implements IScene {
     this.gameOver.alpha = 0;
     this.gameOver.show(won, this.ui.score);
   }
-
+  public explodeSound = new Howl({
+    src: ['../../chomp.wav'],
+    volume: 0.8,
+    rate: 0.7
+  });
 
   // 处理行为 首先判断行为是否有效，有效则应用于board上,并且获取匹配项，清除匹配项
   private async processAction(action: GameAction): Promise<void> {
@@ -127,6 +133,11 @@ export class GameScene extends Container implements IScene {
       this.calculateValidActions();
     } else {
       await animateSymbolSwap(symbol, targetSymbol);
+      const sound = new Howl({
+        src: ['../../error.wav'],
+        volume: 1.2
+        });
+        sound.play();
       await animateSymbolSwap(targetSymbol, symbol);
     }
     if (this.ui.score >= this.rules.limitScore) this.processGameOver(true);
@@ -146,6 +157,7 @@ export class GameScene extends Container implements IScene {
         const position = this.getPositionForPoint(point);
         symbol.boardPos = new Point(symbol.boardPos.x, 0 - symbolList.length + y);
         symbol.symbolID = this.board[y][+x];
+        // animateBoardImpact(this.boardContainer, 785, 4);
         // symbol.boardPos = new Point(symbol.boardPos.x, 0 - symbolList.length + y);
         // symbol.symbolID = this.board[y][+x];
         // animateBoardImpact(this.boardContainer, 650);
@@ -192,7 +204,7 @@ export class GameScene extends Container implements IScene {
       return Promise.all(combination.map(async (point) => {
         const symbol = this.getSymbolOnPoint(point);
         if (!symbol) return
-        await animateSymbolExplode(symbol);
+        await animateSymbolExplode(symbol, this.explodeSound);
         
         this.addSymbolToRefill(symbol, new Point(point.x, -1))
       }))
@@ -254,6 +266,7 @@ export class GameScene extends Container implements IScene {
         symbol.symbolID = board[newPoint.y][newPoint.x];
       }));
     }
+    // animateBoardImpact(this.boardContainer, 785, 4);
     await Promise.all(allDrops);
     this.board = copyBoard(board);    
   }

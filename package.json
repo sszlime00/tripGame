@@ -19,6 +19,7 @@
   },
   "homepage": "",
   "dependencies": {
+    "howler": "^2.2.3",
     "pixi-spine": "^4.0.4",
     "pixi.js": "^7.2.4",
     "tweedle.js": "latest"

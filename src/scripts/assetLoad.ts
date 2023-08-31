@@ -8,6 +8,7 @@ export enum GameFont {
 
 export const GameAssets = {
   mainAtlas: 'main.json',
+  explosion: 'explosion.json',
   background: 'back.png',
   buttonBase: 'anniu.png',
   buttonBasePressed: 'anniu.png',
@@ -31,7 +32,7 @@ export function getSymbolTexture(symbolId: SymbolID): Texture | undefined {
 }
 
 export async function loadAssets(onProgress: ProgressCallback): Promise<void> {
-  await Assets.load([GameAssets.mainAtlas, ...GameAssets.fonts], onProgress);
+  await Assets.load([GameAssets.mainAtlas, GameAssets.explosion, ...GameAssets.fonts], onProgress);
 }
 
 export function loadBackground(): Promise<Texture> {

@@ -3,6 +3,8 @@ import { Easing, EasingFunction, Group, Tween } from 'tweedle.js';
 
 import SymbolComponent from "../components/general/SymbolComponent";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../Administer';
+import ExplosionComponent from '../components/general/Explosion';
+import { Howl } from 'howler';
 
 export const BoardGroup = new Group();
 export const UIGroup = new Group();
@@ -16,9 +18,7 @@ type MoveParams = {
 
 const DefaultMoveParam = { duration: 250, delay: 0, easing: Easing.Quadratic.InOut };
 
-export function animateSymbolToPosition(symbol: SymbolComponent, position: Point, params?: MoveParams): Promise<void> {
-  console.log('animateSymbolToPosition!!!');
-  
+export function animateSymbolToPosition(symbol: SymbolComponent, position: Point, params?: MoveParams): Promise<void> {  
   return new Promise<void>((resolve) => {
     symbol.alpha = 1;
     new Tween(symbol)
@@ -37,12 +37,15 @@ export async function animateSymbolSwap(origin: SymbolComponent, target: SymbolC
     animateSymbolToPosition(target, originPosition, params)
   ]);
 }
-export function animateSymbolExplode(symbol: SymbolComponent): Promise<void> {
+export function animateSymbolExplode(symbol: SymbolComponent, sound): Promise<void> {
+  
+  ExplosionComponent.explosionFX(new Point(symbol.x, symbol.y), symbol.parent);
   return new Promise<void>((resolve) =>
     new Tween(symbol)
-      .to({ scale: 4, alpha: 0 }, 50)
+      .to({ scale: 4, alpha: 0 }, 100)
       .easing(Easing.Quadratic.Out)
       .onComplete(() => {
+        sound.play();
         setTimeout(() => {
           resolve(); // 在间隔时间后解决 Promise
         }, 0.5)})
@@ -91,9 +94,15 @@ export function animateScoreFeedback(
 }
 
 export function animateBoardImpact(container: Container, delay: number, force = 10): Promise<void> {
+  // const sound = new Howl({
+  //   src: ['../../chomp.wav']  // 音效文件的路径
+  // });
   const initialY = container.y;
+  console.log('开始啦~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+  
   BoardGroup.removeAll();
   return new Promise<void>((resolve) => {
+    // const soundId = sound.play();
     const down = new Tween(container, BoardGroup)
       .delay(delay)
       .to({ y: initialY + force }, 100)

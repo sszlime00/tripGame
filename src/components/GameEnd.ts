@@ -2,7 +2,12 @@ import { Color, Container, Sprite, Text, TextStyle, Texture } from "pixi.js";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../Administer";
 import { bounceComponent, fadeComponent } from "../scripts/animationHandler";
 import { GameFont } from "../scripts/assetLoad";
-import ButtonComponent from "./general/ButtonComponent";
+import { Administer, SCREEN_HEIGHT, SCREEN_WIDTH } from "../Administer";
+import ButtonComponent from "../components/general/ButtonComponent";
+import { Game } from '../Page/Game';
+import { GameRules } from '../scripts/types'
+import { StartGame } from "../Page/StartGame";
+import { Howl } from 'howler';
 
 export default class GameOver extends Container {
   private readonly blackLayer: Sprite;
@@ -10,18 +15,27 @@ export default class GameOver extends Container {
   private readonly title: Text;
 
   private readonly message: Text;
+  private readonly playButton: ButtonComponent;
+
 
   private readonly score: Text;
+  private initialRules: GameRules = {
+    limitScore: 10,
+    limitTime: 60,
+  }
 
 
   constructor(onClick: () => void) {
     super();
-    this.blackLayer = this.makeBlackLayer();
     this.message = this.makeMessage();
     this.score = this.makeScore();
+    this.playButton = this.makePlayButton();
+    this.playButton.on('click', this.onPlayClicked, this);
+    this.blackLayer = this.makeBlackLayer();
     this.addChild(this.blackLayer);
     this.addChild(this.message);
     this.addChild(this.score);
+    this.addChild(this.playButton);
   }
 
   public show(win: boolean, score: number, duration = 1000): void {
@@ -42,12 +56,12 @@ export default class GameOver extends Container {
 
   private makeMessage(): Text {
     const message = new Text('YOU WON', new TextStyle({
-      fontFamily: 'Microsoft JhengHei',
-      fill: ["#ffff"],
-      fontSize: 50,
-      stroke: "#0000FF",
-      strokeThickness: 10,
-      fontWeight: 'bold',
+      fontFamily: GameFont.Poppins,
+      fontSize: 65,
+      fill: '#C38ACC',
+      stroke: 'white',
+      strokeThickness: 5,
+      align: "center",
     }));
     message.anchor.set(0.5);
     message.x = SCREEN_WIDTH / 2;
@@ -58,15 +72,41 @@ export default class GameOver extends Container {
   private makeScore(): Text {
     const message = new Text('', new TextStyle({
       fontFamily: GameFont.Poppins,
-      fill: 'white',
-      fontSize: 90,
-      stroke: "black",
+      fontSize: 65,
+      fill: '#C38ACC',
+      stroke: 'white',
       strokeThickness: 5,
-      fontWeight: 'bold',
+      align: "center",
     }));
     message.anchor.set(0.5);
     message.x = SCREEN_WIDTH / 2;
     message.y = SCREEN_HEIGHT / 2;
     return message;
+  }
+  private makePlayButton(): ButtonComponent {
+    const btn = new ButtonComponent({
+      text: 'PLAY   AGAIN',
+      width: 200,
+      height: 60,
+      tint: new Color('#FFFFFF'),
+      hoverTint: new Color('#dcdcdc'),
+      textStyle: new TextStyle({
+        fontFamily: GameFont.Poppins,
+        fill: "#000000",
+        fontSize: 20,
+      }),
+      borders: ButtonComponent.borders(3, 3)
+    });
+    btn.x = SCREEN_WIDTH / 2 - btn.width / 2;
+    btn.y = SCREEN_HEIGHT - 130;
+    return btn;
+  }
+  private onPlayClicked(): void {
+    console.log('click')
+    const music = new Howl({
+      src: ['../../music.mp3'],
+      volume: 0.5
+      });
+    Administer.changeScene(new StartGame(music))
   }
 }

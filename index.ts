@@ -1,9 +1,13 @@
 import { Administer } from './src/Administer';
-import { LobbyScene } from './src/Page/StartGame';
+import { StartGame } from './src/Page/StartGame';
 import { loadAssets } from './src/scripts/assetLoad';
-import { GameScene } from './src/Page/Game';
+import { Game } from './src/Page/Game';
+import { Howl } from 'howler';
+
 
 async function loadGame(): Promise<void> {
+
+  
   const loading = document.getElementById('loading');
   const barFill = document.getElementById('bar-fill');
   const updateProgress = (progress: number) => {
@@ -17,12 +21,13 @@ async function loadGame(): Promise<void> {
 
 (async function () {
   const app = await Administer.initialize();
-  
+ 
   (globalThis as any).__PIXI_APP__ = app;
+  const music = new Howl({
+    src: ['../../music.mp3'],
+    volume: 0.5
+    });
 
   await loadGame();
-  Administer.changeScene(new GameScene({
-    limitScore: 500,
-    limitTime: 60,
-  }));
+  Administer.changeScene(new StartGame(music));
 })();
