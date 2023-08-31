@@ -110,13 +110,12 @@ export class Game extends Container implements IScene {
   }
   public explodeSound = new Howl({
     src: ['chomp.wav'],
-    volume: 0.8,
-    rate: 0.7
+    volume: 0.6,
+    rate: 0.5
   });
 
   // 处理行为 首先判断行为是否有效，有效则应用于board上,并且获取匹配项，清除匹配项
   private async processAction(action: GameAction): Promise<void> {
-    console.log('this.over:????????', this.overing);
     
     this.processing = true;
     const targetPoint = getActionTargetPoint(action);

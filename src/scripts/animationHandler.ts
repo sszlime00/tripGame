@@ -94,11 +94,8 @@ export function animateScoreFeedback(
 }
 
 export function animateBoardImpact(container: Container, delay: number, force = 10): Promise<void> {
-  // const sound = new Howl({
-  //   src: ['../../chomp.wav']  // 音效文件的路径
-  // });
+
   const initialY = container.y;
-  console.log('开始啦~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   
   BoardGroup.removeAll();
   return new Promise<void>((resolve) => {

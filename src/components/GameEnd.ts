@@ -21,7 +21,7 @@ export default class GameOver extends Container {
 
   private readonly score: Text;
   private initialRules: GameRules = {
-    limitScore: 10,
+    limitScore: 150,
     limitTime: 60,
   }
 
@@ -104,6 +104,7 @@ export default class GameOver extends Container {
     return btn;
   }
   private onPlayClicked(): void {
-     Administer.changeScene(new StartGame(music))
+    this.initialRules.limitScore = this.initialRules.limitScore + 150;
+     Administer.changeScene(new StartGame(music, this.initialRules))
   }
 }

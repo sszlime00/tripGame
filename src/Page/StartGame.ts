@@ -16,11 +16,11 @@ export class StartGame extends Container implements IScene {
   private title;
   private playButton: ButtonComponent;
   private initialRules: GameRules = {
-    limitScore: 10,
+    limitScore: 150,
     limitTime: 60,
   }
 
-  constructor(music: Howl) {
+  constructor(music: Howl, rule) {
     super();
   
     music.stop()
@@ -29,6 +29,7 @@ export class StartGame extends Container implements IScene {
     
     this.title = this.makeTitle();
     this.playButton = this.makePlayButton();
+    this.initialRules = rule || this.initialRules;
     this.playButton.on('click', this.onPlayClicked, this);
      
     
@@ -56,7 +57,7 @@ export class StartGame extends Container implements IScene {
   private makeTitle() {
     const text = new Text('Match Game', new TextStyle({
       fontFamily: GameFont.Poppins,
-      fontSize: 55,
+      fontSize: 50,
       fill: '#C38ACC',
       stroke: 'white',
       strokeThickness: 5,
