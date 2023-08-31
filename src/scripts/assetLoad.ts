@@ -1,5 +1,7 @@
 import { Assets, ProgressCallback, Texture } from "pixi.js";
 import { SymbolID } from "./types";
+import { Howl } from 'howler';
+import { music } from "../components/general/AudioAssets";
 
 export enum GameFont {
   DirtyHarold = 'DirtyHarold',
@@ -12,6 +14,7 @@ export const GameAssets = {
   background: 'back.png',
   buttonBase: 'anniu.png',
   buttonBasePressed: 'anniu.png',
+  music: 'music.mp3',
   fonts: [
     'fonts/DirtyHarold.woff2',
     'fonts/Poppins-Bold.ttf',

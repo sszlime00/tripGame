@@ -9,23 +9,31 @@ import { GameRules } from '../scripts/types'
 import { Easing, Tween } from "tweedle.js";
 import { animateTitleDown } from '../scripts/animationHandler'
 import { Howl } from 'howler';
+import { music } from "../components/general/AudioAssets";
 
 
 export class StartGame extends Container implements IScene {
-  private readonly title;
-  private readonly playButton: ButtonComponent;
+  private title;
+  private playButton: ButtonComponent;
   private initialRules: GameRules = {
     limitScore: 10,
     limitTime: 60,
   }
 
-  constructor(music) {
+  constructor(music: Howl) {
     super();
+  
+    music.stop()
+    
     music.play();
+    
     this.title = this.makeTitle();
     this.playButton = this.makePlayButton();
     this.playButton.on('click', this.onPlayClicked, this);
+     
+    
   }
+
 
   public async onEnter(): Promise<void> {
     await this.playIntroTween();
@@ -38,8 +46,11 @@ export class StartGame extends Container implements IScene {
 
   }
   private onPlayClicked(): void {
+
     console.log('click')
+
     Administer.changeScene(new Game(this.initialRules))
+
   }
 
   private makeTitle() {

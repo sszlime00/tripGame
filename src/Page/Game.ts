@@ -109,7 +109,7 @@ export class Game extends Container implements IScene {
     this.gameOver.show(won, this.ui.score);
   }
   public explodeSound = new Howl({
-    src: ['../../chomp.wav'],
+    src: ['chomp.wav'],
     volume: 0.8,
     rate: 0.7
   });
@@ -134,7 +134,7 @@ export class Game extends Container implements IScene {
     } else {
       await animateSymbolSwap(symbol, targetSymbol);
       const sound = new Howl({
-        src: ['../../error.wav'],
+        src: ['error.wav'],
         volume: 1.2
         });
         sound.play();
@@ -168,29 +168,6 @@ export class Game extends Container implements IScene {
     ));
     this.refillSymbols = {};
   }
-
-  // private async processSymbolRefill(): Promise<void> {
-  //   const refillPromises: Promise<void>[] = [];
-  
-  //   for (const [x, symbolList] of Object.entries(this.refillSymbols)) {
-  //     for (let y = symbolList.length - 1; y >= 0; y--) {
-  //       const symbol = symbolList[y];
-  //       const point = new Point(+x, y);
-  //       const position = this.getPositionForPoint(point);
-        
-  //       const animationPromise = animateSymbolToPosition(symbol, position, { easing: Easing.Quartic.In });
-  //       const returnPromise = animationPromise.then(() => {
-  //         symbol.boardPos = point;
-  //         this.symbolPool.returnSymbol(symbol);
-  //       });
-        
-  //       refillPromises.push(returnPromise);
-  //     }
-  //   }
-  
-  //   await Promise.all(refillPromises);
-  //   this.refillSymbols = {};
-  // }
   
 
   // 处理匹配，清理匹配项，开启动画，更新board,抽递归调用处理匹配项
@@ -216,37 +193,6 @@ export class Game extends Container implements IScene {
     this.updateSymbolsToBoardData();
     await this.processCombinations(getCombinationsInBoard(this.board));
   }
-
-  // private async processCombinations(combinations: Array<GameCombination>): Promise<void> {
-  //   if (combinations.length <= 0) return;
-  
-  //   this.board = removeCombinationsFromBoard(this.board, combinations);
-  
-  //   const feedbackPromises: Promise<void>[] = [];
-  //   const fallAndRefillPromises: Promise<void>[] = [];
-  
-  //   for (const [idx, combination] of combinations.entries()) {
-  //     feedbackPromises.push(this.showScoreFeedback(combination, idx));
-  //     for (const point of combination) {
-  //       const symbol = this.getSymbolOnPoint(point);
-  //       if (!symbol) continue;
-  //       await animateSymbolExplode(symbol);
-  //       this.addSymbolToRefill(symbol, new Point(point.x, -1));
-  //     }
-  //   }
-  
-  //   if (!this.overing) {
-  //     fallAndRefillPromises.push(this.processSymbolsFall());
-  //     fallAndRefillPromises.push(this.processSymbolRefill());
-  //   }
-  
-  //   await Promise.all([...feedbackPromises, ...fallAndRefillPromises]);
-  
-  //   this.updateSymbolsToBoardData();
-  
-  //   const newCombinations = getCombinationsInBoard(this.board);
-  //   await this.processCombinations(newCombinations);
-  // }
   
 
   private async processSymbolsFall(): Promise<void> {    
@@ -266,7 +212,6 @@ export class Game extends Container implements IScene {
         symbol.symbolID = board[newPoint.y][newPoint.x];
       }));
     }
-    // animateBoardImpact(this.boardContainer, 785, 4);
     await Promise.all(allDrops);
     this.board = copyBoard(board);    
   }

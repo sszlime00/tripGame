@@ -8,6 +8,7 @@ import { Game } from '../Page/Game';
 import { GameRules } from '../scripts/types'
 import { StartGame } from "../Page/StartGame";
 import { Howl } from 'howler';
+import { music } from "./general/AudioAssets";
 
 export default class GameOver extends Container {
   private readonly blackLayer: Sprite;
@@ -36,6 +37,7 @@ export default class GameOver extends Container {
     this.addChild(this.message);
     this.addChild(this.score);
     this.addChild(this.playButton);
+    
   }
 
   public show(win: boolean, score: number, duration = 1000): void {
@@ -102,11 +104,6 @@ export default class GameOver extends Container {
     return btn;
   }
   private onPlayClicked(): void {
-    console.log('click')
-    const music = new Howl({
-      src: ['../../music.mp3'],
-      volume: 0.5
-      });
-    Administer.changeScene(new StartGame(music))
+     Administer.changeScene(new StartGame(music))
   }
 }
