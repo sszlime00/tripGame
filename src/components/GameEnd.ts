@@ -21,7 +21,7 @@ export default class GameOver extends Container {
 
   private readonly score: Text;
   private initialRules: GameRules = {
-    limitScore: 150,
+    limitScore: 600,
     limitTime: 60,
   }
 
