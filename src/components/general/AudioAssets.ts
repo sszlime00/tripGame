@@ -9,3 +9,22 @@ export const music = new Howl({
     console.log('音频加载好了');
   }
 });
+
+export const explodeSound = new Howl({
+  src: ['chomp1.mp3'],
+  volume: 0.6,
+  rate: 0.5,
+  preload: true,
+  onload: () => {
+    console.log('消失音频加载好了');
+  }
+});
+
+export const errorSound = new Howl({
+  src: ['error.mp3'],
+  volume: 1.2,
+  preload: true,
+  onload: () => {
+    console.log('错误音频加载好了');
+  }
+  });

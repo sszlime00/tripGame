@@ -13,6 +13,7 @@ import { getCombinationScore, getCombinationsInBoard, removeCombinationsFromBoar
 import { BoardMatrix, GameAction, GameCombination, GameRules, IScene, SymbolID } from "../scripts/types";
 import { rangeArray } from "../scripts/utils";
 import { Howl } from 'howler';
+import { explodeSound, errorSound } from "../components/general/AudioAssets";
 
 
 export class Game extends Container implements IScene {
@@ -108,11 +109,6 @@ export class Game extends Container implements IScene {
     this.gameOver.alpha = 0;
     this.gameOver.show(won, this.ui.score);
   }
-  public explodeSound = new Howl({
-    src: ['chomp.wav'],
-    volume: 0.6,
-    rate: 0.5
-  });
 
   // 处理行为 首先判断行为是否有效，有效则应用于board上,并且获取匹配项，清除匹配项
   private async processAction(action: GameAction): Promise<void> {
@@ -132,11 +128,7 @@ export class Game extends Container implements IScene {
       this.calculateValidActions();
     } else {
       await animateSymbolSwap(symbol, targetSymbol);
-      const sound = new Howl({
-        src: ['error.wav'],
-        volume: 1.2
-        });
-        sound.play();
+      errorSound.play();
       await animateSymbolSwap(targetSymbol, symbol);
     }
     if (this.ui.score >= this.rules.limitScore) this.processGameOver(true);
@@ -180,7 +172,7 @@ export class Game extends Container implements IScene {
       return Promise.all(combination.map(async (point) => {
         const symbol = this.getSymbolOnPoint(point);
         if (!symbol) return
-        await animateSymbolExplode(symbol, this.explodeSound);
+        await animateSymbolExplode(symbol, explodeSound);
         
         this.addSymbolToRefill(symbol, new Point(point.x, -1))
       }))
