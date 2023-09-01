@@ -13,7 +13,7 @@ export const music = new Howl({
 export const explodeSound = new Howl({
   src: ['buck.mp3'],
   volume: 0.6,
-  rate: 1.2,
+  rate: 1.4,
   preload: true,
   onload: () => {
     console.log('消失音频加载好了');

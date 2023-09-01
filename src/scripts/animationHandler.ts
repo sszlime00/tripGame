@@ -22,7 +22,7 @@ export function animateSymbolToPosition(symbol: SymbolComponent, position: Point
   return new Promise<void>((resolve) => {
     symbol.alpha = 1;
     new Tween(symbol)
-      .to({ x: position.x, y: position.y }, 100)
+      .to({ x: position.x, y: position.y }, 150)
       .easing(Easing.Quadratic.InOut)
       .onComplete(() => resolve())
       .start()
