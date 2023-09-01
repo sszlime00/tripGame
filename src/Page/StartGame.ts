@@ -20,7 +20,7 @@ export class StartGame extends Container implements IScene {
     limitTime: 60,
   }
 
-  constructor(music: Howl, rule) {
+  constructor(music: Howl, rule?: GameRules) {
     super();
   
     music.stop()

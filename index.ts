@@ -26,3 +26,7 @@ async function loadGame(): Promise<void> {
   await loadGame();
     Administer.changeScene(new StartGame(music));
 })();
+
+window.addEventListener('beforeunload', function() {
+  music.stop();
+});

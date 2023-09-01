@@ -37,15 +37,14 @@ export async function animateSymbolSwap(origin: SymbolComponent, target: SymbolC
     animateSymbolToPosition(target, originPosition, params)
   ]);
 }
-export function animateSymbolExplode(symbol: SymbolComponent, sound): Promise<void> {
-  
+export function animateSymbolExplode(symbol: SymbolComponent, sound?: HTMLAudioElement): Promise<void> {
+  // sound.play();
   ExplosionComponent.explosionFX(new Point(symbol.x, symbol.y), symbol.parent);
   return new Promise<void>((resolve) =>
     new Tween(symbol)
       .to({ scale: 4, alpha: 0 }, 100)
       .easing(Easing.Quadratic.Out)
       .onComplete(() => {
-        sound.play();
         setTimeout(() => {
           resolve(); // 在间隔时间后解决 Promise
         }, 0.5)})

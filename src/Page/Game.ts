@@ -127,8 +127,8 @@ export class Game extends Container implements IScene {
       await this.processCombinations(combinations);
       this.calculateValidActions();
     } else {
-      await animateSymbolSwap(symbol, targetSymbol);
       errorSound.play();
+      await animateSymbolSwap(symbol, targetSymbol);
       await animateSymbolSwap(targetSymbol, symbol);
     }
     if (this.ui.score >= this.rules.limitScore) this.processGameOver(true);
@@ -163,11 +163,12 @@ export class Game extends Container implements IScene {
 
   // 处理匹配，清理匹配项，开启动画，更新board,抽递归调用处理匹配项
   private async processCombinations(combinations: Array<GameCombination>): Promise<void> {
-
+    explodeSound.play();
     if (combinations.length <= 0) return;
     this.board = removeCombinationsFromBoard(this.board, combinations);
     const feedbackPromises = [];
     await Promise.all(combinations.map((combination, idx) => {
+      // explodeSound.play()
       feedbackPromises.push(this.showScoreFeedback(combination, idx));
       return Promise.all(combination.map(async (point) => {
         const symbol = this.getSymbolOnPoint(point);
