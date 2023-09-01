@@ -16,7 +16,7 @@ export class StartGame extends Container implements IScene {
   private title;
   private playButton: ButtonComponent;
   private initialRules: GameRules = {
-    limitScore: 150,
+    limitScore: 500,
     limitTime: 60,
   }
 

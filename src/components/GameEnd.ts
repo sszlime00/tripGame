@@ -104,7 +104,7 @@ export default class GameOver extends Container {
     return btn;
   }
   private onPlayClicked(): void {
-    this.initialRules.limitScore = this.initialRules.limitScore + 150;
+    this.initialRules.limitScore = this.initialRules.limitScore + 300;
      Administer.changeScene(new StartGame(music, this.initialRules))
   }
 }
